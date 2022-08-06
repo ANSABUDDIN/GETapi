@@ -1,50 +1,75 @@
 import { useEffect, useState } from 'react'
-
-import './App.css'
 import axios from 'axios'
+import './App.css'
+import Signin from './Signin';
+
+
+
 
 function App() {
 
-  const [data, setdata] = useState({})
+  const [email, setemail] = useState("");
+  const [pass, setpass] = useState("");
+  const [msg, setmsg] = useState("");
+  const [token, settoken] = useState("");
 
-  useEffect(() => {
-    axios({
-       method: 'get',
-      url: 'https://fakestoreapi.com/products/1',
-      // data: {
-      //   firstName: 'Fred',
-      //   lastName: 'Flintstone'
-      // }
-    }).then((response ) => {
-      setdata(response)
-      console.log(data);
-    });
-  
-    
-  }, [])
-  
+ 
+  // function Signin() {
+  //   axios.post('https://pixelmentor.herokuapp.com/signup', {
+  //     email: email,
+  //     password: pass
+  //   })
+  //     .then(function (response) {
+  //       console.log(response);
+  //       setmsg(response.data.msg);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
 
+
+  // }
+  function login() {
+    axios.post('https://pixelmentor.herokuapp.com/login', {
+      email: email,
+      password: pass
+    })
+      .then(function (response) {
+        console.log(response);
+        setmsg(response.data.msg);
+        settoken(response.data.data.token)
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   return (
     <>
-      <div className='text-center'>
-        <h1>{data.data?.category}</h1>
-        <p>
-          {data.data?.description}
-        </p>
-        <div className="card w-25" style={{width:"13rem"}} >
-          <img src={data.data?.image} className="card-img-top" alt="" />
-            <div className="card-body">
-            <h5 className="card-title"> {data.data?.id}</h5>
-            <p className="card-text"> {data.data?.price}</p>
-              <a href="#" className="btn btn-primary">Press Me </a>
-            </div>
-        </div>
+      <div className="container t-5 pt-5 text-center">
+        <input type="text" value={email} onChange={(e) => { setemail(e.target.value) }} name='Email' />
+        <br />
+        <br />
+        <input type="Password" onChange={(e) => { setpass(e.target.value) }} name='pass' value={pass} />
+        <br />
+        <br />
+        <button onClick={login} className="btn btn-danger"  >Login</button>
+        <p className='mt-5 fw-bolder text-danger'>{msg}</p>
+        <p className='mt-5'>{token}</p>
       </div>
-      <div>
-       
-      </div>
-      
-     
+      {/* <div className="container t-5 pt-5 text-center">
+        <input type="text" value={email} onChange={(e) => { setemail(e.target.value) }} name='email' />
+        <br />
+        <br />
+        <input type="Password" onChange={(e) => { setpass(e.target.value) }} name='pass' value={pass} />
+        <br />
+        <br />
+        <button onClick={Signin} className="btn btn-danger"  >Signin</button>
+        <p className='mt-5 fw-bolder text-danger'>{msg}</p>
+      </div> */}
+
+
+
     </>
   )
 }

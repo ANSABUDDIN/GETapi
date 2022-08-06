@@ -1,0 +1,8 @@
+.card{
+    transform: scale(0.8);
+}
+.card img{
+    width: 50%;
+    padding: 10px;
+    margin: auto;
+}
